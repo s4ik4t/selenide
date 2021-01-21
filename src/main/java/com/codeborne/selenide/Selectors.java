@@ -4,6 +4,7 @@ import com.codeborne.selenide.selector.ByAttribute;
 import com.codeborne.selenide.selector.ByShadow;
 import com.codeborne.selenide.selector.ByText;
 import com.codeborne.selenide.selector.WithText;
+import com.codeborne.selenide.selector.WithTextCaseInsensitive;
 import org.openqa.selenium.By;
 
 import javax.annotation.CheckReturnValue;
@@ -25,6 +26,12 @@ public class Selectors {
   @Nonnull
   public static By withText(String elementText) {
     return new WithText(elementText);
+  }
+
+  @CheckReturnValue
+  @Nonnull
+  public static By withTextCaseInsensitive(String elementText) {
+    return new WithTextCaseInsensitive(elementText);
   }
 
   /**

@@ -3,6 +3,7 @@ package integration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.attribute;
@@ -11,6 +12,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.withText;
+import static com.codeborne.selenide.Selectors.withTextCaseInsensitive;
 import static org.assertj.core.api.Assertions.assertThat;
 
 final class ByTextTest extends ITest {
@@ -77,5 +79,18 @@ final class ByTextTest extends ITest {
     $(byText("Arnold \"Schwarzenegger\"")).shouldBe(visible);
     $("#hero").find(byText("Arnold \"Schwarzenegger\"")).shouldBe(visible);
     $("#apostrophes-and-quotes").find(By.linkText("Options with 'apostrophes' and \"quotes\"")).click();
+  }
+
+  @Test
+  void canFindByTest_caseInsensitive() {
+    $(byText("PAGE with selects")).shouldHave(text("Page with selects"));
+    $(byText("PAGE with SELECTS")).shouldHave(text("Page with selects"));
+  }
+
+  @Test
+  void canFindWithTest_caseInsensitive() {
+    $(withTextCaseInsensitive("Hello WORLD")).shouldHave(text("Hello world"));
+    $(withTextCaseInsensitive("heLLO ")).shouldHave(text("Hello world"));
+    $(withTextCaseInsensitive(" wORld")).shouldHave(text("Hello world"));
   }
 }
