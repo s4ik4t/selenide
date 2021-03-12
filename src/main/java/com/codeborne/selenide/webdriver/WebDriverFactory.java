@@ -19,6 +19,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,7 @@ public class WebDriverFactory {
   private final Map<String, Class<? extends AbstractDriverFactory>> factories = factories();
   private final RemoteDriverFactory remoteDriverFactory = new RemoteDriverFactory();
   private final BrowserResizer browserResizer = new BrowserResizer();
+  private final HttpClientTimeouts httpClientTimeouts = new HttpClientTimeouts();
 
   @CheckReturnValue
   @Nonnull
@@ -107,7 +109,9 @@ public class WebDriverFactory {
       if (config.driverManagerEnabled()) {
         webdriverFactory.setupWebdriverBinary();
       }
-      return webdriverFactory.create(config, browser, proxy, browserDownloadsFolder);
+      WebDriver webDriver = webdriverFactory.create(config, browser, proxy, browserDownloadsFolder);
+      httpClientTimeouts.setup(webDriver, Duration.ofSeconds(10), Duration.ofSeconds(20));
+      return webDriver;
     }
   }
 
